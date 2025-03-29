@@ -1,8 +1,9 @@
-import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
 
 export default function ProductListPage() {
-  const router = useRouter();
-  const { category, subcategory } = router.query;
+const searchParams = useSearchParams();
+  const category = searchParams.get("category");
+  const subcategory = searchParams.get("subcategory");
 
   // Tipe eksplisit untuk data produk
   const allProducts: Record<
