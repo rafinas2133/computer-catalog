@@ -1,0 +1,50 @@
+// import { useRouter } from "next/router";
+
+// export default function ProductListPage() {
+//   const router = useRouter();
+//   const { category, subcategory } = router.query;
+
+//   // Contoh data produk
+//   const allProducts = {
+//     Electronics: {
+//       "Mobile Phones": ["iPhone 14", "Samsung Galaxy S23", "Google Pixel 7"],
+//       Laptops: ["MacBook Pro", "Dell XPS 13", "HP Spectre x360"],
+//     },
+//     Fashion: {
+//       Men: ["T-Shirts", "Jeans", "Shoes"],
+//       Women: ["Dresses", "Handbags", "Jewelry"],
+//     },
+//     "Home Appliances": {
+//       Kitchen: ["Microwave", "Blender", "Refrigerator"],
+//       Cleaning: ["Vacuum Cleaner", "Washing Machine", "Air Purifier"],
+//     },
+//   };
+
+//   const products =
+//     allProducts[category as keyof typeof allProducts]?.[subcategory as keyof typeof allProducts[typeof category]] || [];
+
+//   return (
+//     <div className="max-w-screen-lg mx-auto py-8">
+//       {/* Heading */}
+//       <h1 className="text-2xl font-bold mb-6">
+//         Products in {subcategory} ({category})
+//       </h1>
+
+//       {/* Product List */}
+//       {products.length > 0 ? (
+//         <ul className="grid grid-cols-1 md:grid-cols-3 gap-4">
+//           {products.map((product, index) => (
+//             <li
+//               key={index}
+//               className="border rounded-md p-4 hover:shadow-md transition"
+//             >
+//               {product}
+//             </li>
+//           ))}
+//         </ul>
+//       ) : (
+//         <p>No products found for this category/subcategory.</p>
+//       )}
+//     </div>
+//   );
+// }
