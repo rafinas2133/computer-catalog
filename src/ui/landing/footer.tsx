@@ -29,7 +29,7 @@ export default function Footer() {
   
           {/* Logo */}
           <div className="w-full md:w-1/3 flex justify-center items-center">
-            <h1 className="w-full text-2xl font-bold top-10">TokoKami</h1>
+            <h1 className="w-full text-2xl font-bold top-10">Logo Toko</h1>
           </div>
   
           {/* Profile Info */}

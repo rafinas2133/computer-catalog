@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from "react";
-import { bannerErrorImage, banner1, banner2, banner3 } from "@/utils/image";
+import { ErrorImage, banner1, banner2, banner3 } from "@/utils/image";
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import Image from "next/image";
 import Link from 'next/link';
@@ -74,7 +74,7 @@ export function Banner() {
         {extendedBanners.map((banner, index) => (
           <Link key={index} href={banner.link} className="flex-shrink-0 w-full ">
             <Image
-              src={banner.image ?? bannerErrorImage}
+              src={banner.image ?? ErrorImage}
               alt={`Banner ${index}`}
               width={1920}
               height={1080}

@@ -23,6 +23,7 @@ model Product {
 model Category {
   id            Int        @id @default(autoincrement())
   name          String
+  imageUrl      String
   parentId      Int?
   parent        Category?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
   subCategories Category[] @relation("CategoryHierarchy")
@@ -32,7 +33,7 @@ model Category {
 model Banner {
   id        Int      @id @default(autoincrement())
   title     String
-  imageUrl  String // URL gambar banner
+  imageUrl  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -40,7 +41,7 @@ model Banner {
 model User {
   id        Int      @id @default(autoincrement())
   username  String   @unique
-  password  String // Simpan hash password, bukan plaintext
+  password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

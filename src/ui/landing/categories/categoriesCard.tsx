@@ -1,5 +1,6 @@
+
 import Link from "next/link";
-import { bannerErrorImage } from "@/utils/image";
+import { ErrorImage } from "@/utils/image";
 import Image from "next/image";
 
 export function CategoryCard({
@@ -11,14 +12,17 @@ export function CategoryCard({
   image?: string;
   link: string;
 }) {
+
+  const linkParsed = link.replace(/\s+/g, "--");
+
   return (
     <Link
-      href={link}
+      href={`products/${linkParsed}`}
       className="w-32 h-32 flex flex-col justify-center items-center rounded-lg hover:shadow-lg transition duration-300 group"
     >
       <div className="w-24 h-24 rounded-full overflow-hidden group-hover:animate-breathe">
         <Image
-          src={image ?? bannerErrorImage}
+          src={image ?? ErrorImage}
           alt={title}
           width={96}
           height={96}

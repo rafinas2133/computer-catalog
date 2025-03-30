@@ -1,52 +1,31 @@
 import { NewItemCard } from "./NewItemCard";
+import { useGetProducts } from "@/lib/hooks";
 
 
-export function NewItem() {
-    return (
-      <div className="w-full h-max flex flex-col justify-center">
-        <div className="md:w-full w-xs h-full max-w-screen-xl mx-auto rounded-xl p-2 bg-red-600 shadow-md shadow-black/50">
-          <div className="bg-red-600 text-2xl rounded-t-xl pb-2 text-white text-center">Yang Baru nih</div>
-          <div className="w-full h-full bg-white px-2 py-4 flex flex-wrap justify-center gap-4">
-            <NewItemCard
-                title="Title 1"
-                description="Description 1"
-                link="#"
-                price={100000}
-            />
-            <NewItemCard
-                title="Title 1"
-                description="Description 1"
-                link="#"
-                price={100000}
-            />
-            <NewItemCard
-                title="Title 1"
-                description="Description 1"
-                link="#"
-                price={100000}
-            />
-                        <NewItemCard
-                title="Title 1"
-                description="Description 1"
-                link="#"
-                price={100000}
-            />
-                        <NewItemCard
-                title="Title 1"
-                description="Description 1"
-                link="#"
-                price={100000}
-            />
-                                    <NewItemCard
-                title="Title 1"
-                description="Description 1"
-                link="#"
-                price={100000}
-            />
-            
-          </div>
+export async function NewItem() {
+
+  const products = await useGetProducts()
+
+  return (
+    <div className="w-full h-max flex flex-col justify-center">
+      <div className="md:w-full w-xs h-full max-w-screen-xl mx-auto rounded-xl p-2 bg-black shadow-md shadow-black/50">
+        <div className="bg-black text-2xl rounded-t-xl pb-2 text-white text-center">
+          Yang Baru Nih
+        </div>
+        <div className="w-full h-full bg-white justify-center grid md:grid-cols-6 grid-cols-1">
+          {products.slice(0, 7).map((product, index) => (
+            <div key={product.id} className={ `${index === 0 ? "block md:hidden" : "hidden md:block"}`}>
+              <NewItemCard
+                title={product.name}
+                description={product.description}
+                link={`#`}
+                price={product.price}
+              />
+            </div>
+          ))}
         </div>
       </div>
-    );
+    </div>
+  );
   }
   

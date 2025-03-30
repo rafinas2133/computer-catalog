@@ -1,42 +1,41 @@
-'use client';
+'use client'
 
 import { useState } from 'react';
 import { Bars3Icon } from '@heroicons/react/24/outline';
-import { categoriesData } from '@/utils/data';
 import { useRouter } from 'next/navigation';
+import { Category } from '@/lib/definition';
 
-export default function DropdownMenu() {
+export default function DropdownMenu({ categories }: { categories: Category[] }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
-  const [isSubMenuVisible, setIsSubMenuVisible] = useState(false);
-
+  const [hoveredCategory, setHoveredCategory] = useState<Category | null>(null);
   const router = useRouter();
 
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
-  const handleMouseEnter = (categoryName: string) => {
-    setHoveredCategory(categoryName);
-    setIsSubMenuVisible(true);
+  const handleMouseEnter = (category: Category) => setHoveredCategory(category);
+  const handleMouseLeave = () => setHoveredCategory(null);
+
+  function linkParser({link} : {link:string}) {
+    return link.replace(/\s+/g, "--");
+}
+  
+
+  const handleCategoryClick = (categoryName: string) => {
+    router.push(`/products/${linkParser({link: categoryName})}`);
   };
 
-  const handleMouseLeave = () => {
-    setHoveredCategory(null);
-    setIsSubMenuVisible(false);
+  const handleSubCategoryClick = (categoryName: string) => {
+    router.push(`/products/${linkParser({link: categoryName})}`);
   };
 
-  const handleCategoryClick = (category: string) => {
-    router.push(`/products/${category}`);
-  };
-
-  const handleSubCategoryClick = (category: string, subcategory: string) => {
-    router.push(`/products/${category}/${subcategory}`);
+  const handleProductClick = (productId: number) => {
+    router.push(`/product/${productId}`);
   };
 
   return (
     <div className="relative">
-      {/* Hamburger Icon */}
       <button
-        onClick={toggleDropdown}
+        onClick ={toggleDropdown}
         className="p-2 rounded-md bg-gray-200 hover:bg-gray-300"
       >
         <Bars3Icon className="h-6 w-6 text-gray-800" />
@@ -45,18 +44,17 @@ export default function DropdownMenu() {
       {/* Dropdown Wrapper */}
       {isDropdownOpen && (
         <div
-          className="absolute left-0 mt-2 w-[500px] flex"
-          onMouseEnter={() => setIsSubMenuVisible(true)}
+          className="absolute left-0 mt-2 w-[600px] flex"
           onMouseLeave={handleMouseLeave}
         >
-          {/* Dropdown for Categories */}
+          {/* Categories List */}
           <div className="w-64 bg-white shadow-md rounded-md max-h-80 overflow-y-auto">
             <ul>
-              {categoriesData.map((category) => (
+              {categories.filter((category) => category.parent === null).map((category) => (
                 <li
-                  key={category.name}
-                  onMouseEnter={() => handleMouseEnter(category.name)}
-                  onClick={() => handleCategoryClick(category.name)} // Navigasi ke kategori
+                  key={category.id}
+                  onMouseEnter={() => handleMouseEnter(category)}
+                  onClick={() => handleCategoryClick(category.name)}
                   className="group px-4 py-2 hover:bg-gray-100 cursor-pointer"
                 >
                   <span>{category.name}</span>
@@ -65,30 +63,33 @@ export default function DropdownMenu() {
             </ul>
           </div>
 
-          {/* Dropdown for Subcategories */}
-          {isSubMenuVisible && hoveredCategory && (
-            <div className="w-96 bg-white shadow-md rounded-md max-h-80 overflow-y-auto flex flex-col gap-4 p-4">
-              {categoriesData
-                .find((category) => category.name === hoveredCategory)
-                ?.subCategories.map((subCategory) => (
+          {/* Subcategories and Products */}
+          {hoveredCategory && (
+            <div className="w-96 bg-white shadow-md rounded-md max-h-80 overflow-y-auto p-4">
+              {hoveredCategory.subCategories?.map((subCategory) => (
+                <div key={subCategory.id} className="mb-4">
+                  {/* Subcategory */}
                   <div
-                    key={subCategory.name}
-                    className="flex flex-col cursor-pointer"
-                    onClick={() => handleSubCategoryClick(hoveredCategory, subCategory.name)} // Navigasi ke subkategori
+                    className="font-semibold cursor-pointer hover:text-blue-600"
+                    onClick={() => handleSubCategoryClick(subCategory.name)}
                   >
-                    <span className="font-semibold">{subCategory.name}</span>
-                    <ul className="mt-2 space-y-1">
-                      {subCategory.products.map((product, index) => (
-                        <li
-                          key={index}
-                          className="pl-4 py-1 text-gray-700 hover:bg-gray-100 rounded-md"
-                        >
-                          {product}
-                        </li>
-                      ))}
-                    </ul>
+                    {subCategory.name}
                   </div>
-                ))}
+
+                  {/* Products under Subcategory */}
+                  <ul className="mt-2 space-y-1">
+                    {subCategory.products.map((product) => (
+                      <li
+                        key={product.id}
+                        onClick={() => handleProductClick(product.id)}
+                        className="pl-4 py-1 text-gray-700 hover:bg-gray-100 rounded-md cursor-pointer"
+                      >
+                        {product.name}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </div>
           )}
         </div>
