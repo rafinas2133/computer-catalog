@@ -18,7 +18,7 @@ export async function NewItem() {
               <NewItemCard
                 title={product.name}
                 description={product.description}
-                link={`#`}
+                link={`/products/${product.category.name}/${product.id}`}
                 price={product.price}
               />
             </div>

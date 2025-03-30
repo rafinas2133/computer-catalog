@@ -23,7 +23,9 @@ export function NewItemCard (
             </div>
             <h3 className="text-lg font-semibold">{title}</h3>
             <p className="text-sm text-center">{description}</p>
-            <p className="text-sm font-semibold">Rp {price}</p>
+            <div className='flex items-end grow'>
+                <p className="text-sm font-semibold">Rp {price}</p>
+            </div>
         </Link>
     );
 }
