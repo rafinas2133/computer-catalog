@@ -184,12 +184,13 @@ export async function useGetCategoryByName(name: string) {
   }
   
   // Create a new category
-  export async function useCreateCategory(name: string, parentId: number | null) {
+  export async function useCreateCategory(name: string, parentId: number | null, imageUrl: string) {
     try {
       const newCategory = await prisma.category.create({
         data: {
           name,
           parentId,
+          imageUrl,
         },
       });
       return newCategory;
