@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { Logo } from '@/utils/image';
 import { useGetCategories } from '@/lib/hooks';
 import { Suspense } from 'react';
+import { SearchSkeleton } from '@/ui/skeleton/Skeleton';
 
 export default async function NavLinks() {
 
@@ -30,7 +31,7 @@ export default async function NavLinks() {
       </Link>
 
       <div className="flex-1">
-        <Suspense fallback={<div>"Loading..."</div>}>
+        <Suspense fallback={<SearchSkeleton/>}>
           <Search placeholder="Search products..." />
         </Suspense>
       </div>
