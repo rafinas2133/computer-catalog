@@ -6,6 +6,7 @@ import DropdownMenu from './dropdownMenu';
 import Image from 'next/image';
 import { Logo } from '@/utils/image';
 import { useGetCategories } from '@/lib/hooks';
+import { Suspense } from 'react';
 
 export default async function NavLinks() {
 
@@ -29,7 +30,9 @@ export default async function NavLinks() {
       </Link>
 
       <div className="flex-1">
-        <Search placeholder="Search products..." />
+        <Suspense fallback={<Search placeholder="Loading..." />}>
+          <Search placeholder="Search products..." />
+        </Suspense>
       </div>
     </div>
   );
