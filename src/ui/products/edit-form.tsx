@@ -38,7 +38,7 @@ export default function Form({
   
     try {
       await useUpdateProduct( products.id, name, description, price, quantity, categoryId, selectedFile, products.imageUrl);
-      showSuccess("Product created successfully!", "/admin/products");
+      showSuccess("Product created successfully!");
       // Use router.push to navigate programmatically
       setTimeout(() => {
         router.push('/admin/products');

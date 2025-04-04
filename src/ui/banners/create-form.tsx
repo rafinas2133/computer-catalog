@@ -34,7 +34,7 @@ export default function Form({ products }: { products: Product[] }) {
   
     try {
       await useCreateBanner(title, productId, selectedFile);
-      showSuccess("Banner created successfully!", "/admin/banners");
+      showSuccess("Banner created successfully!");
       // Use router.push to navigate programmatically
       setTimeout(() => {
         router.push('/admin/banners');

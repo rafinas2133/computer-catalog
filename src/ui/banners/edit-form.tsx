@@ -36,7 +36,7 @@ export default function Form({
   
       try {
         await useUpdateBanner(banners.id, title, productId, selectedFile, banners.imageUrl);
-        showSuccess("Banner updated successfully!", "/admin/banners");
+        showSuccess("Banner updated successfully!");
         
         // Navigasi setelah sukses
         router.push('/admin/banners');
