@@ -26,6 +26,8 @@ export type Category = {
     parent: Category | null;
     subCategories: Category[];
     products: Product[];
+    createdAt: Date;    
+    updatedAt: Date;
 }
 
 export type Banner = {
