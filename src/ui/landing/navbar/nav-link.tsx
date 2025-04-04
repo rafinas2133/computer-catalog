@@ -30,7 +30,7 @@ export default async function NavLinks() {
       </Link>
 
       <div className="flex-1">
-        <Suspense fallback={<Search placeholder="Loading..." />}>
+        <Suspense fallback={<div>"Loading..."</div>}>
           <Search placeholder="Search products..." />
         </Suspense>
       </div>
