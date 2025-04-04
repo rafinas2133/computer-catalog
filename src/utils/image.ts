@@ -9,3 +9,5 @@ export const instagramIcon = "/sosmed-icon/instagram-icon.png";
 export const twitterIcon = "/sosmed-icon/twitter-icon.png";
 export const whatsappIcon = "/sosmed-icon/whatsapp-icon.png";
 export const whatsappIcon2 = "/sosmed-icon/whatsapp-blacknwhite-icon.png";
+
+export const Logo = "/logo-brand.png";

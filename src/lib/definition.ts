@@ -1,6 +1,7 @@
 export type User = {
-    id: number;
-    username: string;
+    id: string;
+    name: string | null;
+    email: string;
     password: string;
 }
 
@@ -11,16 +12,16 @@ export type Product = {
     price: number;
     stock: number;
     imageUrl: string;
-    categoryId: number; // Changed from string to number to match Prisma
+    categoryId: number; 
     category: Category;
-    createdAt: Date;    // Added to match Prisma
-    updatedAt: Date;    // Added to match Prisma
+    createdAt: Date;    
+    updatedAt: Date;    
 }
 
 export type Category = {
     id: number;
     name: string;
-    imageUrl: string | null; // Match Prisma's nullable type
+    imageUrl: string; // Match Prisma's nullable type
     parentId: number | null;
     parent: Category | null;
     subCategories: Category[];
@@ -31,4 +32,5 @@ export type Banner = {
     id: number;
     title: string;
     imageUrl: string;
+    linkProduct: string;
 }

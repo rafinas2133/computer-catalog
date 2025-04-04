@@ -3,6 +3,8 @@
 import Link from 'next/link';
 import Search from '../../search';
 import DropdownMenu from './dropdownMenu';
+import Image from 'next/image';
+import { Logo } from '@/utils/image';
 import { useGetCategories } from '@/lib/hooks';
 
 export default async function NavLinks() {
@@ -13,15 +15,19 @@ export default async function NavLinks() {
     <div className="flex items-center gap-4 w-full">
       <DropdownMenu categories={categories} />
 
-      {/* Logo */}
       <Link
         href="/"
-        className="text-lg font-bold text-gray-900 hover:text-blue-600"
+        className="flex text-lg font-bold text-yellow-hunt hover:text-hovered"
       >
-        Logo Toko
+        <Image
+          src={Logo}
+          alt='logo Techtonic'
+          width={32}
+          height={32}
+        />
+        Techtonic
       </Link>
 
-      {/* Search */}
       <div className="flex-1">
         <Search placeholder="Search products..." />
       </div>

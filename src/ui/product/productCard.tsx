@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ErrorImage, whatsappIcon } from '@/utils/image';
 import { useState } from "react";
-import { ImageSkeleton } from "../skeleton/imageSkeleton";
+import { ImageSkeleton } from "../skeleton/Skeleton";
 
 export function ProductCard(
 {  image, 
@@ -31,7 +31,7 @@ export function ProductCard(
 
     return (
         <>
-        <div className="w-full h-full p-2 flex flex-row grow gap-2 border">
+        <div className="w-full h-full p-2 flex flex-row grow gap-2 border rounded-2xl">
             <Link href={link} className="w-1/6 h-32 relative">
             {(isLoading) && <ImageSkeleton/>}
             <Image 
@@ -46,7 +46,7 @@ export function ProductCard(
             />
             </Link>
             <div className="flex flex-row w-5/6">
-                <Link href={link} className="flex flex-col justify-start grow hover:text-blue-600 transform duration-300">
+                <Link href={link} className="flex flex-col justify-start grow hover:text-hovered transform duration-300">
                     <h3 className="text-lg font-semibold">{title}</h3>
                     <p className="text-sm">{description}</p>
                 </Link>

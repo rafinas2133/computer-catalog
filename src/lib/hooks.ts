@@ -1,59 +1,36 @@
 'use server'
 
-import { PrismaClient } from "@prisma/client";
-import { Category } from "./definition";
-import { Product } from "./definition";
+import { prisma } from "../../prisma"
+import { Category, Product, Banner } from "./definition";
 
-const prisma = new PrismaClient();
+const ITEMS_PER_PAGE = 6;
 
 // Get all users
-export async function useGetUser() {
+export async function useGetUser(email: string, password: string) {
   try {
-    const users = await prisma.user.findMany();
-    return users;
+    const user = await prisma.user.findUnique({
+      where: { email, password },
+    });
+    return user;
   } catch (error) {
-    console.error("Error fetching users:", error);
+    console.error("Error fetching user:", error);
     throw error;
   }
 }
 
 // Create a new user
-export async function useCreateUser(username: string, password: string) {
+export async function useCreateUser(email: string, name: string, password: string) {
   try {
     const newUser = await prisma.user.create({
       data: {
-        username,
+        name,
+        email,
         password, // Jangan lupa hash password sebelum menyimpan di production
       },
     });
     return newUser;
   } catch (error) {
     console.error("Error creating user:", error);
-    throw error;
-  }
-}
-
-// Update user
-export async function useUpdateUser(id: number, data: Partial<{ username: string; password: string }>) {
-  try {
-    const updatedUser = await prisma.user.update({
-      where: { id },
-      data,
-    });
-    return updatedUser;
-  } catch (error) {
-    console.error("Error updating user:", error);
-    throw error;
-  }
-}
-
-// Delete user
-export async function useDeleteUser(id: number) {
-  try {
-    await prisma.user.delete({ where: { id } });
-    return { message: "User deleted successfully" };
-  } catch (error) {
-    console.error("Error deleting user:", error);
     throw error;
   }
 }
@@ -79,9 +56,59 @@ export async function useGetProductById(id: number) {
         category: true, // Menyertakan informasi kategori produk
       },
     });
-    return product;
+    return product as Product;
   } catch (error) {
     console.error("Error fetching product by ID:", error);
+    throw error;
+  }
+}
+
+export async function useGetFilteredProducts(query: string, currentPage: number): Promise<Product[]> {
+    
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+
+  try{
+    const products = await prisma.product.findMany({
+      include: { category: true },
+      where: {
+        OR: [
+          {
+            name: {
+              contains: query,
+              mode: 'insensitive', 
+            },
+          },
+        ],
+      },
+      take: ITEMS_PER_PAGE,
+      skip: offset,
+    });
+
+    return products as Product[];
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    throw error;
+  }
+}
+
+export async function useGetTotalProductPages(query: string): Promise<number> {
+  try {
+    // Hitung jumlah total banner berdasarkan query pencarian
+    const totalProducts = await prisma.product.count({
+      where: {
+        name: {
+          contains: query, // mencari yang title-nya mengandung query
+          mode: 'insensitive', // supaya pencarian tidak case-sensitive
+        },
+      },
+    });
+
+    // Hitung total pages berdasarkan hasil pencarian
+    const totalPages = Math.ceil(totalProducts / ITEMS_PER_PAGE);
+    
+    return totalPages;
+  } catch (error) {
+    console.error("Error counting Products:", error);
     throw error;
   }
 }
@@ -159,6 +186,7 @@ export async function useGetCategoryByName(name: string) {
       throw error;
     }
   }
+  //categories--------------------------------------------------
   
   // Get all categories
   export async function useGetCategories(): Promise<Category[]> {
@@ -179,6 +207,89 @@ export async function useGetCategoryByName(name: string) {
       return categories as Category[];
     } catch (error) {
       console.error('Error fetching categories:', error);
+      throw error;
+    }
+  }
+
+  export async function useGetCategoryById(id: number) {
+    try {
+      const category = await prisma.category.findFirst({
+        where: {
+          id,
+        },
+        include: {
+          subCategories: {
+            include: {
+              subCategories: true, 
+              products: true, 
+            },
+          },
+          products: true, 
+          parent: true, 
+        },
+      });
+      return category as Category;
+    } catch (error) {
+      console.error("Error fetching category by name:", error);
+      throw error;
+    }
+  }
+
+  export async function useGetFilteredCategories(query: string, currentPage: number): Promise<Category[]> {
+    
+    const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+
+    try{
+      const categories = await prisma.category.findMany({
+        include: {
+          subCategories: {
+            include: {
+              subCategories: true, 
+              products: true, 
+            },
+          },
+          products: true, 
+          parent: true, 
+        },
+        where: {
+          OR: [
+            {
+              name: {
+                contains: query,
+                mode: 'insensitive', 
+              },
+            },
+          ],
+        },
+        take: ITEMS_PER_PAGE,
+        skip: offset,
+      });
+
+      return categories as Category[];
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+      throw error;
+    }
+  }
+
+  export async function useGetTotalCategoryPages(query: string): Promise<number> {
+    try {
+      // Hitung jumlah total banner berdasarkan query pencarian
+      const totalBanners = await prisma.category.count({
+        where: {
+          name: {
+            contains: query, // mencari yang title-nya mengandung query
+            mode: 'insensitive', // supaya pencarian tidak case-sensitive
+          },
+        },
+      });
+  
+      // Hitung total pages berdasarkan hasil pencarian
+      const totalPages = Math.ceil(totalBanners / ITEMS_PER_PAGE);
+      
+      return totalPages;
+    } catch (error) {
+      console.error("Error counting banners:", error);
       throw error;
     }
   }
@@ -211,38 +322,85 @@ export async function useGetCategoryByName(name: string) {
     }
   }
   
-  // Get all banners
-export async function useGetBanners() {
+//banner----------------------------------------------------------------------------
+export async function useGetBanners(): Promise<Banner[]> {
     try {
       const banners = await prisma.banner.findMany();
-      return banners;
+      return banners as Banner[];
     } catch (error) {
       console.error("Error fetching banners:", error);
       throw error;
     }
   }
+
+export async function useGetTotalBannerPages(query: string): Promise<number> {
+  try {
+    // Hitung jumlah total banner berdasarkan query pencarian
+    const totalBanners = await prisma.banner.count({
+      where: {
+        title: {
+          contains: query, // mencari yang title-nya mengandung query
+          mode: 'insensitive', // supaya pencarian tidak case-sensitive
+        },
+      },
+    });
+
+    // Hitung total pages berdasarkan hasil pencarian
+    const totalPages = Math.ceil(totalBanners / ITEMS_PER_PAGE);
+    
+    return totalPages;
+  } catch (error) {
+    console.error("Error counting banners:", error);
+    throw error;
+  }
+}
+
+export async function useGetFilteredBanners(query: string, currentPage: number) {
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+
+  try {
+    const banners = await prisma.banner.findMany({
+      where: {
+        OR: [
+          {
+            title: {
+              contains: query,
+              mode: 'insensitive', // case-insensitive search
+            },
+          },
+          {
+            linkProduct: {
+              contains: query,
+              mode: 'insensitive', // case-insensitive search
+            },
+          },
+        ],
+      },
+      orderBy: {
+        createdAt: 'desc', // Anda bisa mengganti ini dengan field yang sesuai untuk urutan
+      },
+      take: ITEMS_PER_PAGE,
+      skip: offset,
+    });
+
+    return banners;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch banners.');
+  }
+}
   
-  // Create a new banner
-  export async function useCreateBanner(title: string, imageUrl: string) {
+
+  export async function useGetBannersById(id: number) {
     try {
-      const newBanner = await prisma.banner.create({
-        data: { title, imageUrl },
+      const banner = await prisma.banner.findUnique({
+        where: { id },
       });
-      return newBanner;
+      return banner;
     } catch (error) {
-      console.error("Error creating banner:", error);
+      console.error("Error fetching banner by ID:", error);
       throw error;
     }
   }
   
-  // Delete banner
-  export async function useDeleteBanner(id: number) {
-    try {
-      await prisma.banner.delete({ where: { id } });
-      return { message: "Banner deleted successfully" };
-    } catch (error) {
-      console.error("Error deleting banner:", error);
-      throw error;
-    }
-  }
   

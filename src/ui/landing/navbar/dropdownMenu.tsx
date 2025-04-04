@@ -28,34 +28,34 @@ export default function DropdownMenu({ categories }: { categories: Category[] })
     router.push(`/products/${linkParser({link: categoryName})}`);
   };
 
-  const handleProductClick = (productId: number) => {
-    router.push(`/product/${productId}`);
+  const handleProductClick = (categoryName: string, productId: number) => {
+    router.push(`/products/${linkParser({link: categoryName})}/${productId}`);
   };
 
   return (
     <div className="relative">
       <button
         onClick ={toggleDropdown}
-        className="p-2 rounded-md bg-gray-200 hover:bg-gray-300"
+        className="p-2 rounded-md bg-yellow-hunt hover:bg-hovered"
       >
-        <Bars3Icon className="h-6 w-6 text-gray-800" />
+        <Bars3Icon className="h-6 w-6 text-black" />
       </button>
 
       {/* Dropdown Wrapper */}
       {isDropdownOpen && (
         <div
-          className="absolute left-0 mt-2 w-[600px] flex"
+          className="absolute left-0 mt-2 w-[600px] flex text-black"
           onMouseLeave={handleMouseLeave}
         >
           {/* Categories List */}
-          <div className="w-64 bg-white shadow-md rounded-md max-h-80 overflow-y-auto">
+          <div className="w-64 bg-yellow-hunt shadow-md rounded-md max-h-80 overflow-y-auto">
             <ul>
               {categories.filter((category) => category.parent === null).map((category) => (
                 <li
                   key={category.id}
                   onMouseEnter={() => handleMouseEnter(category)}
                   onClick={() => handleCategoryClick(category.name)}
-                  className="group px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                  className="group px-4 py-2 hover:bg-hovered cursor-pointer"
                 >
                   <span>{category.name}</span>
                 </li>
@@ -65,12 +65,12 @@ export default function DropdownMenu({ categories }: { categories: Category[] })
 
           {/* Subcategories and Products */}
           {hoveredCategory && (
-            <div className="w-96 bg-white shadow-md rounded-md max-h-80 overflow-y-auto p-4">
+            <div className="w-96 bg-yellow-hunt shadow-md rounded-md max-h-80 overflow-y-auto p-4">
               {hoveredCategory.subCategories?.map((subCategory) => (
                 <div key={subCategory.id} className="mb-4">
                   {/* Subcategory */}
                   <div
-                    className="font-semibold cursor-pointer hover:text-blue-600"
+                    className="font-semibold cursor-pointer hover:text-hovered"
                     onClick={() => handleSubCategoryClick(subCategory.name)}
                   >
                     {subCategory.name}
@@ -81,8 +81,8 @@ export default function DropdownMenu({ categories }: { categories: Category[] })
                     {subCategory.products.map((product) => (
                       <li
                         key={product.id}
-                        onClick={() => handleProductClick(product.id)}
-                        className="pl-4 py-1 text-gray-700 hover:bg-gray-100 rounded-md cursor-pointer"
+                        onClick={() => handleProductClick( subCategory.name, product.id)}
+                        className="pl-4 py-1 text-gray-700 hover:bg-hovered hover:text-white rounded-md cursor-pointer"
                       >
                         {product.name}
                       </li>

@@ -63,7 +63,7 @@ export function Banner() {
   }, []);
 
   return (
-    <div className="relative w-full h-full max-h-[480px] mx-auto overflow-hidden bg-white shadow-xl shadow-amber-100">
+    <div className="relative w-full h-full max-h-[480px] mx-auto overflow-hidden bg-white shadow-2xl shadow-yellow-hunt/50">
       <div
         className="flex transition-transform ease-in-out duration-500"
         style={{

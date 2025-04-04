@@ -2,6 +2,8 @@
 
 @theme {
   --animate-breathe: breathe 1s ease-in-out infinite;
+  --color-yellow-hunt: #FFC60B;
+  --color-hovered: #FF8B00;
 }
 
 @layer utilities {

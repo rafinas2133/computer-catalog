@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { ErrorImage, whatsappIcon2 } from "@/utils/image";
-import { ImageSkeleton } from "../skeleton/imageSkeleton";
+import { ImageSkeleton } from "../skeleton/Skeleton";
 
 export function ProductDetailCard(
     {name,
@@ -28,7 +28,7 @@ export function ProductDetailCard(
         }
 
     return (
-        <div className="max-w-screen-lg w-full h-full bg-white rounded-xl p-6 ring-2 ring-gray-900/10 ">
+        <div className="max-w-screen-lg w-full h-full rounded-xl p-6 bg-black ring-2 ring-yellow-hunt/50 text-yellow-hunt shadow-2xl shadow-yellow-hunt/50">
             <div className="flex h-fit flex-col md:flex-row gap-6">
                 <div className="flex-shrink-0 w-full md:w-1/3">
                     {(isLoading) && <ImageSkeleton/>}
@@ -55,9 +55,9 @@ export function ProductDetailCard(
                         href={`https://wa.me/6281290669999?text=Halo%20saya%20ingin%20beli%20${name}`} 
                         target="_blank" 
                         rel="noopener noreferrer" 
-                        className="bg-black text-white py-2 px-4 rounded-lg shadow hover:bg-gray-800 transition inline-flex justify-center"
+                        className="bg-yellow-hunt text-black py-2 px-4 rounded-lg shadow hover:bg-hovered transition inline-flex justify-center"
                     >
-                        <Image src={whatsappIcon2} alt="whatsapp-icon" width={24} height={24} className="inline mr-2 invert" /> Beli Sekarang
+                        <Image src={whatsappIcon2} alt="whatsapp-icon" width={24} height={24} className="inline mr-2" /> Beli Sekarang
                     </Link>
                 </div>
             </div>

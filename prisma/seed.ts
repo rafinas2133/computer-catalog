@@ -1,5 +1,5 @@
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
+import { prisma } from "../prisma"
+import bcrypt from 'bcryptjs';
 
 async function main() {
   // Clear existing data
@@ -11,17 +11,18 @@ async function main() {
   // Create Admin
   await prisma.user.create({
     data: {
-      username: 'admin',
-      password: 'securepassword', // Gunakan password hash di produksi
+      name: 'admin',
+      email: 'admin@example.com',
+      password: await bcrypt.hash("123456", 10), 
     },
   });
 
   // Create Banners
   await prisma.banner.createMany({
     data: [
-      { title: "Welcome to PC Store", imageUrl: 'https://example.com/banner1.jpg' },
-      { title: "Best Deals on GPUs", imageUrl: 'https://example.com/banner2.jpg' },
-      { title: "Build Your Dream PC", imageUrl: 'https://example.com/banner3.jpg' },
+      { title: "Welcome to PC Store", imageUrl: 'https://example.com/banner1.jpg', linkProduct: "1" },
+      { title: "Best Deals on GPUs", imageUrl: 'https://example.com/banner2.jpg', linkProduct: "2"}, 
+      { title: "Build Your Dream PC", imageUrl: 'https://example.com/banner3.jpg', linkProduct: "3" },
     ],
   });
 

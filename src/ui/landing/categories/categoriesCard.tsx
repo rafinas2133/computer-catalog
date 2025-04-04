@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { ErrorImage } from "@/utils/image";
 import Image from "next/image";
-import { ImageSkeleton } from "@/ui/skeleton/imageSkeleton";
+import { ImageSkeleton } from "@/ui/skeleton/Skeleton";
 import { useState } from "react";
 
 export function CategoryCard({
@@ -30,7 +30,7 @@ export function CategoryCard({
   return (
     <Link
       href={`products/${linkParsed}`}
-      className="w-32 h-32 flex flex-col justify-center items-center rounded-lg hover:shadow-lg transition duration-300 group"
+      className="w-32 h-32 flex flex-col justify-center items-center rounded-lg hover:shadow-lg hover:shadow-yellow-hunt/50 transition duration-300 group"
     >
       <div className="w-24 h-24 rounded-full overflow-hidden group-hover:animate-breathe">
         {(isLoading) && <ImageSkeleton />}

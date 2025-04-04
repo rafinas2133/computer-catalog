@@ -8,8 +8,8 @@ export async function NewItem() {
 
   return (
     <div className="w-full h-max flex flex-col justify-center">
-      <div className="md:w-full w-xs h-full max-w-screen-xl mx-auto rounded-xl p-2 bg-black shadow-md shadow-black/50">
-        <div className="bg-black text-2xl rounded-t-xl pb-2 text-white text-center">
+      <div className="md:w-full w-xs h-full max-w-screen-xl mx-auto rounded-xl p-2 bg-yellow-hunt shadow-2xl shadow-yellow-hunt/50">
+        <div className="bg-yellow-hunt text-2xl rounded-t-xl pb-2 text-black text-center font-bold">
           Yang Baru Nih
         </div>
         <div className="w-full h-full bg-white justify-center grid md:grid-cols-6 grid-cols-1">

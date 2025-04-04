@@ -18,7 +18,7 @@ export default async function ProductDetailPage(props: {
     
 
     return (
-    <div className="w-full h-full flex flex-col items-center justify-center mt-8">
+    <div className="w-full h-full flex flex-col items-center justify-center mt-8 ">
         <ProductDetailCard {...products} />
     </div>
     );
