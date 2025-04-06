@@ -6,19 +6,16 @@ import { prisma } from "../../../../prisma";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"; 
 
-// Get all banners
 export async function GET() {
   try {
     const banners = await prisma.banner.findMany();
     return NextResponse.json(banners);
   } catch (error) {
-    console.error('Error fetching banners:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch banners' },
-      { status: 500 }
-    );
+    console.error("Error fetching banners:", error);
+    return NextResponse.json({ error: "Failed to fetch banners" }, { status: 500 });
   }
 }
+
 
 // Create a new banner
 export async function POST(request: Request) {

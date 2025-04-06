@@ -1,20 +1,18 @@
 'use client';
 
 import { useState, useEffect } from "react";
-import { ErrorImage, banner1, banner2, banner3 } from "@/utils/image";
+import { ErrorImage} from "@/utils/image";
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import Image from "next/image";
 import Link from 'next/link';
-
-const banners = [
-  { id: 1, image: banner1, link: "/page1" },
-  { id: 2, image: banner2, link: "/page2" },
-  { id: 3, image: banner3, link: "/page3" },
-];
+import { useGetBanners } from "@/lib/bannerHooks";
 
 export function Banner() {
+
+  const { banners, loading}  = useGetBanners();
   const [currentIndex, setCurrentIndex] = useState(1); // Start with 1 to show the first "real" banner
   const [isTransitioning, setIsTransitioning] = useState(false);
+
 
   // Extended banners with duplicates for seamless looping
   const extendedBanners = [
@@ -64,7 +62,14 @@ export function Banner() {
 
   return (
     <div className="relative w-full h-full max-h-[480px] mx-auto overflow-hidden bg-white shadow-2xl shadow-yellow-hunt/50">
-      <div
+      { loading ? (
+        <div className="relative w-full h-full flex items-center justify-center">
+          <div className="flex w-96 h-[480px] border-b-2 border-gray-900 rounded-full animate-spin"></div>
+        </div>
+      ) : 
+      (
+        <>
+        <div
         className="flex transition-transform ease-in-out duration-500"
         style={{
           transform: `translateX(-${currentIndex * 100}%)`,
@@ -72,9 +77,9 @@ export function Banner() {
         }}
       >
         {extendedBanners.map((banner, index) => (
-          <Link key={index} href={banner.link} className="flex-shrink-0 w-full ">
+          <Link key={index} href={banner?.linkProduct} className="flex-shrink-0 w-full ">
             <Image
-              src={banner.image ?? ErrorImage}
+              src={banner?.imageUrl ?? ErrorImage}
               alt={`Banner ${index}`}
               width={1920}
               height={1080}
@@ -95,6 +100,10 @@ export function Banner() {
       >
         <ChevronRightIcon className="w-6 h-6 bg-transparent" />
       </button>
+        </>
+      )
+      }
+      
     </div>
   );
 }

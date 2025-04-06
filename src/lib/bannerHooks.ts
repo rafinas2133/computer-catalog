@@ -1,7 +1,34 @@
 'use client';
 import { revalidateBanners } from "@/app/action";
+import { Banner } from "./definition";
+import { useEffect, useState } from "react";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"; 
+
+// hooks.ts
+export function useGetBanners() {
+  const [banners, setBanners] = useState<Banner[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchBanners() {
+      try {
+        const res = await fetch("/api/banners");
+        const json = await res.json();
+        setBanners(json);
+      } catch (error) {
+        console.error("Failed to fetch banners", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchBanners();
+  }, []);
+
+  return { banners, loading };
+}
+
 
 export async function useCreateBanner(
   title: string,
