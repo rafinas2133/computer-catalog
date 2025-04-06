@@ -1,25 +1,40 @@
 import { NextResponse } from 'next/server';
-import path from 'path';
-import { writeFile } from 'fs/promises';
+import { put, del } from '@vercel/blob';
 
-export async function POST(req: Request) {
-  try {
-    const formData = await req.formData();
-    const file = formData.get('image') as File | null;
+export async function POST(request: Request): Promise<NextResponse> {
+  const { searchParams } = new URL(request.url);
+  const filename = searchParams.get('filename');
 
-    if (!file) {
-      return NextResponse.json({ error: 'No file received.' }, { status: 400 });
-    }
-
-    const buffer = Buffer.from(await file.arrayBuffer());
-    const filename = `${Date.now()}_${file.name.replace(/\s/g, '_')}`;
-    const filePath = path.join(process.cwd(), 'public/uploads', filename);
-
-    await writeFile(filePath, buffer);
-
-    return NextResponse.json({ message: 'Success', filename, status: 201 });
-  } catch (error) {
-    console.error('Error uploading file:', error);
-    return NextResponse.json({ message: 'Failed', status: 500 });
+  if (!filename) {
+    return NextResponse.json(
+      { message: "Missing 'filename' in query params" },
+      { status: 400 }
+    );
   }
+
+  if (!request.body) {
+    return NextResponse.json(
+      { message: "Missing file data in request body" },
+      { status: 400 }
+    );
+  }
+ 
+  const blob = await put(filename, request.body, {
+    access: 'public',
+  });
+ 
+  return NextResponse.json(blob);
+}
+
+export async function DELETE(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const urlToDelete = searchParams.get('url') as string;
+
+  if (!urlToDelete) {
+    return new Response(JSON.stringify({ error: "Missing 'url' parameter" }), { status: 400 });
+  }
+
+  await del(urlToDelete);
+
+  return new Response(null, { status: 204 });
 }

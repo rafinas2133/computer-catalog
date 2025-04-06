@@ -6,10 +6,10 @@ import { Category, Product, Banner } from "./definition";
 const ITEMS_PER_PAGE = 6;
 
 // Get all users
-export async function useGetUser(email: string, password: string) {
+export async function useGetUser(email: string) {
   try {
-    const user = await prisma.user.findUnique({
-      where: { email, password },
+    const user = await prisma.user.findFirst({
+      where: { email},
     });
     return user;
   } catch (error) {
@@ -79,6 +79,9 @@ export async function useGetFilteredProducts(query: string, currentPage: number)
             },
           },
         ],
+      },
+      orderBy: {
+        createdAt: 'desc',
       },
       take: ITEMS_PER_PAGE,
       skip: offset,
@@ -260,6 +263,9 @@ export async function useGetCategoryByName(name: string) {
               },
             },
           ],
+        },
+        orderBy: {
+          createdAt: 'desc',
         },
         take: ITEMS_PER_PAGE,
         skip: offset,

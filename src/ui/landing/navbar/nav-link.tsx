@@ -1,17 +1,27 @@
 
 
 import Link from 'next/link';
-import Search from '../../search';
+import { SearchV2 } from '../../search';
 import DropdownMenu from './dropdownMenu';
 import Image from 'next/image';
 import { Logo } from '@/utils/image';
-import { useGetCategories } from '@/lib/hooks';
+import { useGetCategories, useGetFilteredProducts } from '@/lib/hooks';
 import { Suspense } from 'react';
 import { SearchSkeleton } from '@/ui/skeleton/Skeleton';
 
-export default async function NavLinks() {
+export default async function NavLinks(props: {
+  searchParams?: Promise<{
+      query?: string;
+      page?: string;
+  }>
+}) {
 
   const categories = await useGetCategories();
+  const searchParams = await props.searchParams;
+  const query = searchParams?.query || '';
+  const currentPage = Number(searchParams?.page) || 1;
+
+  const products = await useGetFilteredProducts(query, currentPage);
 
   return (
     <div className="flex items-center gap-4 w-full">
@@ -31,8 +41,8 @@ export default async function NavLinks() {
       </Link>
 
       <div className="flex-1">
-        <Suspense fallback={<SearchSkeleton/>}>
-          <Search placeholder="Search products..." />
+        <Suspense key={query + currentPage} fallback={<SearchSkeleton/>}>
+          <SearchV2 placeholder="Search products..." products={products}/>
         </Suspense>
       </div>
     </div>

@@ -28,7 +28,6 @@ export function UpdateProduct({ id }: { id: number }) {
   
   export function DeleteProduct({ id}: { id: number}) {
     const { deleteproduct } = useDeleteProduct();
-    console.log(id);
 
     const handleDelete = async (event: React.FormEvent) => {
       event.preventDefault();

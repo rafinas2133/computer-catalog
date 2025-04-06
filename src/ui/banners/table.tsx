@@ -10,7 +10,6 @@ export default async function BannerTable({
   currentPage: number;
 }) {
   const banners = await useGetFilteredBanners(query, currentPage);
-  
 
   return (
     <div className="mt-6 flow-root">

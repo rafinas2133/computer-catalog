@@ -3,8 +3,8 @@
 import { NextResponse } from "next/server";
 import { revalidatePath } from 'next/cache';
 import { prisma } from "../../../../prisma";
-import fs from 'fs';
-import path from 'path';
+
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"; 
 
 // Get all banners
 export async function GET() {
@@ -21,8 +21,6 @@ export async function GET() {
 }
 
 // Create a new banner
- // Adjust this import to your prisma client setup
-
 export async function POST(request: Request) {
   try {
     const { title, imageUrl, linkProduct } = await request.json();
@@ -51,47 +49,36 @@ export async function POST(request: Request) {
 export async function DELETE(req: Request) {
   try {
     const { id } = await req.json();
-    
-    // First, get the banner to find the image URL
+
     const banner = await prisma.banner.findUnique({
-      where: { id: Number(id) }
+      where: { id: Number(id) },
     });
-    
+
     if (!banner) {
       return NextResponse.json(
         { success: false, message: "Banner not found" },
         { status: 404 }
       );
     }
-    
-    // Extract the filename from the imageUrl
-    // Assuming imageUrl is something like "/uploads/image123.jpg"
+
     const imageUrl = banner.imageUrl;
-    const filename = imageUrl.split('/').pop();
-    
-    // Delete the banner from the database
-    await prisma.banner.delete({ 
-      where: { id: Number(id) } 
+
+    // Kirim DELETE request ke endpoint upload, pakai URL absolut
+    await fetch(`${baseUrl}/api/upload?url=${encodeURIComponent(imageUrl)}`, {
+      method: 'DELETE',
     });
-    
-    // Delete the image file from the filesystem
-    if (filename) {
-      const uploadDir = path.join(process.cwd(), 'public', 'uploads');
-      const filePath = path.join(uploadDir, filename);
-      
-      // Check if file exists before attempting to delete
-      if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
-      }
-    }
-    
-    // Revalidate the path to update the UI
+
+    await prisma.banner.delete({
+      where: { id: Number(id) },
+    });
+
     revalidatePath('/admin/banners');
-    
-    return NextResponse.json({ 
-      success: true, 
-      message: "Banner and image deleted successfully" 
+
+    return NextResponse.json({
+      success: true,
+      message: "Banner and image deleted successfully",
     });
+
   } catch (error) {
     console.error("Error deleting banner:", error);
     return NextResponse.json(
@@ -105,7 +92,6 @@ export async function PUT(req: Request) {
   try {
     const { id, title, imageUrl, linkProduct } = await req.json();
 
-    // Cek apakah banner ada di database
     const existingBanner = await prisma.banner.findUnique({
       where: { id: Number(id) },
     });
@@ -117,28 +103,29 @@ export async function PUT(req: Request) {
       );
     }
 
-    let finalImageUrl = existingBanner.imageUrl; // Default pakai gambar lama
+    let finalImageUrl = existingBanner.imageUrl;
 
-    // Jika ada gambar baru, hapus gambar lama
+    // Jika gambar baru berbeda, hapus gambar lama dari Vercel Blob
     if (imageUrl && imageUrl !== existingBanner.imageUrl) {
-      const oldFilename = existingBanner.imageUrl.split("/").pop();
-      if (oldFilename) {
-        const filePath = path.join(process.cwd(), "public", "uploads", oldFilename);
-        if (fs.existsSync(filePath)) {
-          fs.unlinkSync(filePath);
-        }
+      if (existingBanner.imageUrl?.startsWith("https://")) {
+        await fetch(`${baseUrl}/api/upload?url=${encodeURIComponent(existingBanner.imageUrl)}`, {
+          method: "DELETE",
+        });
       }
+
       finalImageUrl = imageUrl;
     }
 
-    // Update data banner
     const updatedBanner = await prisma.banner.update({
       where: { id: Number(id) },
-      data: { title, imageUrl: finalImageUrl, linkProduct },
+      data: {
+        title,
+        imageUrl: finalImageUrl,
+        linkProduct,
+      },
     });
 
-    // ✅ Revalidate cache
-    revalidatePath('/admin/banners');
+    revalidatePath("/admin/banners");
 
     return NextResponse.json({
       success: true,
@@ -152,4 +139,5 @@ export async function PUT(req: Request) {
     );
   }
 }
+
 
