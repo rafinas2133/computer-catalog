@@ -4,18 +4,18 @@ import { getToken } from "next-auth/jwt";
 
 export async function middleware(req: NextRequest) {
 
-  const token = await getToken({
-    req,
-    secret: process.env.NEXTAUTH_SECRET,
-  });
+  // const token = await getToken({
+  //   req,
+  //   secret: process.env.NEXTAUTH_SECRET,
+  // });
 
-  if (!token && req.nextUrl.pathname.startsWith("/admin")) {
-    const loginUrl = new URL("/login", req.url);
-    loginUrl.searchParams.set("callbackUrl", req.nextUrl.pathname);
-    return NextResponse.redirect(loginUrl);
-  }
+  // if (!token && req.nextUrl.pathname.startsWith("/admin")) {
+  //   const loginUrl = new URL("/login", req.url);
+  //   loginUrl.searchParams.set("callbackUrl", req.nextUrl.pathname);
+  //   return NextResponse.redirect(loginUrl);
+  // }
 
-  return NextResponse.next();
+  // return NextResponse.next();
 }
 
 export const config = {
