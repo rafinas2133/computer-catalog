@@ -1,6 +1,6 @@
 # 🖥️ E-Catalog Komputer
 
-This is a **Next.js** application for an online computer catalog, bootstrapped with `create-next-app`. It uses Prisma for database access and management.
+This is a **Next.js** application for an online computer catalog. It uses Prisma for database access and management.
 
 ## 🚀 Getting Started
 
