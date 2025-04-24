@@ -24,10 +24,10 @@ export default async function Page(props: {
     <main>
       <Breadcrumbs
         breadcrumbs={[
-          { label: 'Invoices', href: '/dashboard/invoices' },
+          { label: 'Categories', href: '/admin/categories' },
           {
-            label: 'Edit Invoice',
-            href: `/dashboard/invoices/${id}/edit`,
+            label: 'Edit Category',
+            href: `/admin/categories/${id}/edit`,
             active: true,
           },
         ]}
