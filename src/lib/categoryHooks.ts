@@ -2,6 +2,8 @@
 import { revalidateCategories } from "@/app/action";
 import { Category } from "./definition";
 
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"; 
+
 export async function useCreateCategory(
   name: string, 
   parentId: number | null, 
@@ -51,7 +53,7 @@ export async function useCreateCategory(
 export function useDeleteCategory() {
   const deleteCategory = async (id: number) => {
     try {
-      const response = await fetch(`/api/categories`, {
+      const response = await fetch(`${baseUrl}/api/categories`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -90,7 +92,7 @@ export async function useUpdateCategory(
   try {
     if (imageFile) {
 
-      const uploadResponse = await fetch(`/api/upload?filename=${encodeURIComponent(imageFile.name)}`, {
+      const uploadResponse = await fetch(`${baseUrl}/api/upload?filename=${encodeURIComponent(imageFile.name)}`, {
         method: "POST",
         body: imageFile,
       });
@@ -104,7 +106,7 @@ export async function useUpdateCategory(
       imageUrl = uploadResult.url;
     }
 
-    const updateResponse = await fetch(`/api/categories`, {
+    const updateResponse = await fetch(`${baseUrl}/api/categories`, {
       method: "PUT",
       headers: {
         'Content-Type': 'application/json',

@@ -1,10 +1,7 @@
 'use client';
 import { revalidateProducts } from "@/app/action";
 
-const baseUrl =
-  typeof window !== "undefined"
-    ? window.location.origin 
-    : process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"; 
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"; 
 
 export async function useCreateProduct(
   name: string, 
@@ -93,7 +90,7 @@ export async function useUpdateProduct(
   try {
     if (imageFile) {
 
-      const uploadResponse = await fetch(`/api/upload?filename=${encodeURIComponent(imageFile.name)}`, {
+      const uploadResponse = await fetch(`${baseUrl}/api/upload?filename=${encodeURIComponent(imageFile.name)}`, {
         method: "POST",
         body: imageFile,
       });

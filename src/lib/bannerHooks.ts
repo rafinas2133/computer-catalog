@@ -85,7 +85,7 @@ export async function useUpdateBanner(
   try {
     if (imageFile) {
 
-      const uploadResponse = await fetch(`/api/upload?filename=${encodeURIComponent(imageFile.name)}`, {
+      const uploadResponse = await fetch(`${baseUrl}/api/upload?filename=${encodeURIComponent(imageFile.name)}`, {
         method: "POST",
         body: imageFile,
       });
@@ -105,7 +105,7 @@ export async function useUpdateBanner(
       }
     }
 
-    const updateResponse = await fetch(`/api/banners`, {
+    const updateResponse = await fetch(`${baseUrl}/api/banners`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id, title, imageUrl, linkProduct }),
