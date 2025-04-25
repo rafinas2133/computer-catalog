@@ -10,7 +10,7 @@ export default async function ProductListPage(props: {
   const params = await props.params;
   const categoryName = params.category; 
   
-  const linkParsed = categoryName.replace("--", " ");
+  const linkParsed = categoryName.replace(/--/g, " ");
 
   const category = await useGetCategoryByName(linkParsed);
   if (!category) {

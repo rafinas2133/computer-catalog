@@ -41,7 +41,7 @@ export function CategoryCard({
           height={96}
           className="w-full h-full object-cover"
           onError={handleImageError}
-          onLoadingComplete={() => setIsLoading(false)}
+          onLoad={() => setIsLoading(false)}
           unoptimized={!isOptimized}
           
         />
