@@ -79,13 +79,13 @@ export function Banner() {
         }}
       >
         {extendedBanners.map((banner, index) => (
-          <Link key={index} href={baseUrl + "/products/" + banner?.linkProduct} className="flex-shrink-0 w-full">
+          <Link key={index} href={baseUrl + "/products/" + banner?.linkProduct} className="relative flex-shrink-0 w-full h-[480px]">
             <Image
               src={banner?.imageUrl ?? ErrorImage}
               alt={`Banner ${index}`}
-              width={1920}
-              height={400}
-              className="w-full h-full object-fill object-center"
+              fill
+              sizes="100vw"
+              className="w-full h-full object-cover object-center"
               placeholder="blur"
               blurDataURL= {ErrorImage}
             />
