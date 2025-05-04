@@ -41,6 +41,7 @@ export async function useCreateProduct(
   });
 
   const createResult = await createResponse.json();
+  await revalidateProducts();
 
   if (!createResponse.ok) {
     throw new Error(createResult.message || 'Failed to create product');

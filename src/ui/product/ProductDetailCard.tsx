@@ -9,11 +9,13 @@ import { ImageSkeleton } from "../skeleton/Skeleton";
 export function ProductDetailCard(
     {name,
     description,
+    stock,
     price,
     imageUrl
     }: {
         name: string;
         description: string;
+        stock: number;
         price: number;
         imageUrl: string;
     }) {
@@ -30,18 +32,16 @@ export function ProductDetailCard(
     return (
         <div className="max-w-screen-lg w-full h-full rounded-xl p-6 bg-black ring-2 ring-yellow-hunt/50 text-yellow-hunt shadow-2xl shadow-yellow-hunt/50">
             <div className="flex h-fit flex-col md:flex-row gap-6">
-                <div className="flex-shrink-0 w-full md:w-1/3">
-                    {(isLoading) && <ImageSkeleton/>}
-                    <Image 
-                        src={imgSrc} 
-                        alt={description} 
-                        layout="responsive" 
-                        width={400} 
-                        height={400} 
-                        objectFit="cover" 
-                        className="rounded-xl" 
+                <div className="flex-shrink-0 w-full md:w-1/4 h-64 relative">
+                    {(isLoading) && <ImageSkeleton />}
+                    <Image
+                        src={imgSrc}
+                        alt={description}
+                        layout="fill"
+                        objectFit="cover"
+                        className="rounded-xl"
                         unoptimized={!isOptimized}
-                        onError={() => handleImageError()}
+                        onError={handleImageError}
                         onLoad={() => setIsLoading(false)}
                     />
                 </div>
@@ -49,10 +49,11 @@ export function ProductDetailCard(
                     <div className="grow">
                         <h1 className="text-3xl font-bold mb-6">{name}</h1>
                         <p className="text-lg mb-4">{description}</p>
-                        <p className="text-xl font-semibold text-red-600 mb-6">${price}</p>
+                        <p className="text-lg font-semibold mb-4 text-hovered">Stok {stock}</p>
+                        <p className="text-xl font-semibold text-red-600 mb-6">Rp.{price}</p>
                     </div>
                     <Link 
-                        href={`https://wa.me/6281290669999?text=Halo%20saya%20ingin%20beli%20${name}`} 
+                        href={`https://wa.me/6285790508300?text=Halo%20saya%20ingin%20beli%20${name}`} 
                         target="_blank" 
                         rel="noopener noreferrer" 
                         className="bg-yellow-hunt text-black py-2 px-4 rounded-lg shadow hover:bg-hovered transition inline-flex justify-center"

@@ -84,8 +84,8 @@ export function Banner() {
               src={banner?.imageUrl ?? ErrorImage}
               alt={`Banner ${index}`}
               width={1920}
-              height={1080}
-              className="w-full h-full object-cover object-center"
+              height={400}
+              className="w-full h-full object-fill object-center"
               placeholder="blur"
               blurDataURL= {ErrorImage}
             />

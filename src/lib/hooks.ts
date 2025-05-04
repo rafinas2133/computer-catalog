@@ -40,6 +40,9 @@ export async function useGetProducts(): Promise <Product[]> {
     try {
       const products = await prisma.product.findMany({
         include: { category: true },
+        orderBy: {
+          createdAt: 'desc',
+        }
       });
       return products as Product[];
     } catch (error) {
