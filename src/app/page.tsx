@@ -2,6 +2,7 @@ import Navbar from "@/ui/landing/navbar/navbar";
 import { Banner } from "@/ui/landing/banner";
 import { CategoriesList } from "@/ui/landing/categories/categories";
 import { NewItem } from "@/ui/landing/new/newItem";
+import { RecomItem } from "@/ui/landing/recommended/recomItem";
 import Footer from "@/ui/landing/footer"; 
 
 export default function Home() {
@@ -14,6 +15,7 @@ export default function Home() {
         <Banner /> 
         <CategoriesList/>
         <NewItem/>
+        <RecomItem/>
       </main>
       <footer className="w-full h-full flex flex-col gap-20 justify-center mt-20">
         <Footer/> 

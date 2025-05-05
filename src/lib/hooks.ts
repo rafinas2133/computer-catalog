@@ -51,6 +51,18 @@ export async function useGetProducts(): Promise <Product[]> {
     }
   }
 
+  export async function useGetProductsRandom(): Promise <Product[]> {
+    try {
+      const products = await prisma.product.findMany({
+        include: { category: true },
+      });
+      return products as Product[];
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      throw error;
+    }
+  }
+
 export async function useGetProductById(id: number) {
   try {
     const product = await prisma.product.findUnique({
