@@ -20,6 +20,7 @@ export async function NewItem() {
                 description={product.description}
                 link={`/products/${product.category.name}/${product.id}`}
                 price={product.price}
+                image={product.imageUrl}
               />
             </div>
           ))}
