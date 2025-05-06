@@ -52,7 +52,7 @@ export function ProductCard(
                 </Link>
                 <div className="flex flex-col items-end gap-2">
                     <p className="text-lg font-semibold grow">Rp {price}</p>
-                    <Link href="https://wa.me/628123456789" target="_blank" className="">
+                    <Link href={`https://wa.me/6285790508300?text=Halo%20saya%20ingin%20beli%20${title}`} target="_blank" className="">
                         <Image src={whatsappIcon} alt="whatsapp" width={64} height={64}/>
                     </Link>
                 </div>
